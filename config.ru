@@ -73,12 +73,16 @@ end
 
 #run CookieServer.new
 
+#---
+
 cookieServer = CookieServer.new
 cookieServerWrapper = CustomWrapper.new(cookieServer)
 
+# Rack::Builder is not needed
 #app = Rack::Builder.new do
   #run cookieServerWrapper
 #end
 #run app
 
+# Equivalent to this
 run cookieServerWrapper

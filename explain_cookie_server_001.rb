@@ -18,7 +18,7 @@ class CookieServer < Sinatra::Base
       :domain => 'localhost',
       :path => '/',
       :expire_after => (24 * 60 * 60), # seconds
-      :secret => 'secret_encryption_key'
+      :secret => 'secret_key'
   
   # This gets run before every request.
   # We are saying that every request is going to respond
@@ -37,7 +37,7 @@ class CookieServer < Sinatra::Base
     @session_bef = session.to_h
   end
 
-  def success_response(merge={})
+  def aresponse(merge={})
     ret = {
       ok: true,
       data: {
@@ -50,28 +50,45 @@ class CookieServer < Sinatra::Base
       params: params.to_h
     }
     ret.merge!(merge)
+    #binding.pry
     return ret.to_json
   end
 
   get '/' do
-    return success_response
+    return aresponse
   end
 
   get '/session/clear' do
     session.clear
-    return success_response(:message => "session cleared")
+    return aresponse(:message => "session cleared")
   end
 
   get '/cookies/clear' do
     cookies.clear
-    return success_response(
+    return aresponse(
       :message => "cookies cleared BUT session remains intact",
     )
   end
 
-  get '/cookies/add' do
+  get '/cookies/set' do; return set_on(cookies); end
+  get '/cookies/del' do; return del_on(cookies); end
+  get '/session/set' do; return set_on(session); end
+  get '/session/del' do; return del_on(session); end
+
+  protected
+
+  def set_on(thing)
+    key, val = params.values_at(:key, :val)
+    return aresponse(:ok => false, :message => 'Expecting params :key and :val') unless key && val
+    thing[key] = val
+    return aresponse(:ok => true, :message => "value added to #{thing.class.name}")
   end
 
-  get '/cookies/del' do
+  def del_on(thing)
+    key = params[:key]
+    return aresponse(:ok => false, :message => 'Expecting params :key') unless key
+    return aresponse(:ok => false, :message => 'Nothing to delete at :key') unless thing[key]
+    thing.delete(key)
+    return aresponse(:ok => true, :message => "key deleted on #{thing.class.name}")
   end
 end
