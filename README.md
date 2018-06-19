@@ -80,7 +80,7 @@ Sample Response:
 
 Every request here will respond with boolean key 'ok' indicating success or failure. This is a personal convention, but not entirely without some validation from other projects (like Slack). I started doing this ok-true ok-false thing a long time ago. I prefer 'ok' over something like 'success' because it is shorter, and you're much less likely to accidentally type 'sucess' or any other alternate spelling -- it's pretty hard to mistype 'ok'. 
 
-Moving on, this you'll notice that the bulk of the response is all within a 'data' key. Within this you'll find 3 keys for the Cookie and 2 for the session.
+Moving on, you'll notice that the bulk of the response is all within a 'data' key. Within this you'll find 3 keys for the Cookie and 2 for the session.
 
 #### The 3 Cookie Keys and What They Mean
 * **cookies_bef** - Contains a map representing all cookies. This is parsed from the 'cookie' header in the request.
@@ -89,7 +89,7 @@ Moving on, this you'll notice that the bulk of the response is all within a 'dat
 
 #### The 2 Session Keys and What They Mean
 * **session_bef** - Contains a map with all of the key-value pairs stored in the session. This is captured before any changes are made to the session. Notice nesting is allowed.
-* **session_cur** - Contains a map with all of the key-value pairs stored in the session. This is captured at the time of the response after changes are made to the session. Notice what changes. This will made more sense when we see the routes that let you change what is stored in the session (play with it).
+* **session_cur** - Contains a map with all of the key-value pairs stored in the session. This is captured at the time of the response after changes are made to the session. Notice what changes. This will make more sense when we see the routes that let you change what is stored in the session (play with it).
 
 ### GET / 
 View The Current State.
